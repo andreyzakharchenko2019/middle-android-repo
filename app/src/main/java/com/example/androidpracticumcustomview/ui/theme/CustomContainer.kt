@@ -34,7 +34,8 @@ class CustomContainer @JvmOverloads constructor(
     }
 
     override fun addView(child: View) {
-        // TODO
-        // ...
+       if ( this.childCount == 2) {
+           throw IllegalStateException("Элемента может быть только два")
+       }
     }
 }
