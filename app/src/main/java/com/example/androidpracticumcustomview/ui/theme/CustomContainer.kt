@@ -35,12 +35,11 @@ class CustomContainer @JvmOverloads constructor(
             val child = getChildAt(i)
             measureChildWithMargins(child, widthMeasureSpec, 0, heightMeasureSpec, 0)
 
-            // Суммируем размеры каждого дочернего элемента
+
             totalWidth = maxOf(totalWidth, child.measuredWidth)
             totalHeight += child.measuredHeight
         }
 
-        // Применяем размеры
         val width = resolveSize(totalWidth, widthMeasureSpec)
         val height = resolveSize(totalHeight, heightMeasureSpec)
 
@@ -49,24 +48,45 @@ class CustomContainer @JvmOverloads constructor(
 
     override fun onLayout(changed: Boolean, left: Int, top: Int, right: Int, bottom: Int) {
 
+        val containerWidth = right - left
+        val containerHeight = bottom - top
+
         if (childCount == 1) {
 
             val child = getChildAt(0)
 
-            val childLeft = (right - left - child.measuredWidth) / 2
-            val childRight = childLeft + child.measuredWidth
-            val childBottom = top + child.measuredHeight
+            val childWidth = child.measuredWidth
+            val childHeight = child.measuredHeight
 
-            child.layout(childLeft, top, childRight, childBottom)
+            val centerX = (containerWidth - childWidth) / 2
+            val centerY = (containerHeight - childHeight) / 2
+
+            child.layout(centerX, centerY, centerX + childWidth, centerY + childHeight)
+
+            val deltaY = (paddingTop - centerY).toFloat()
+
+            child.animate()
+                .translationY(deltaY)
+                .setDuration(5000)
+                .start()
         } else {
 
             val child = getChildAt(1)
 
-            val childLeft = (right - left - child.measuredWidth) / 2
-            val childTop = bottom - child.measuredHeight
-            val childRight = childLeft + child.measuredWidth
+            val childWidth = child.measuredWidth
+            val childHeight = child.measuredHeight
 
-            child.layout(childLeft, childTop, childRight, bottom)
+            val centerX = (containerWidth - childWidth) / 2
+            val centerY = (containerHeight - childHeight) / 2
+
+            child.layout(centerX, centerY, centerX + childWidth, centerY + childHeight)
+
+            val deltaY = (paddingBottom + centerY).toFloat()
+
+            child.animate()
+                .translationY(deltaY)
+                .setDuration(5000)
+                .start()
         }
 
     }
@@ -76,6 +96,14 @@ class CustomContainer @JvmOverloads constructor(
             throw IllegalStateException("Элементов может быть только два")
         }
 
+        child.apply {
+            alpha = 0f
+        }
+
         super.addView(child)
+
+        child.animate()
+            .alpha(1f)
+            .setDuration(2000)
     }
 }
