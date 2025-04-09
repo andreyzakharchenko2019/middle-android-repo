@@ -4,4 +4,6 @@
     <string name="compose_screen">Compose</string>
     <string name="first_text">Я первый текст!</string>
     <string name="second_text">А я второй текст!</string>
+    <string name="first_text_compose">Я первый текст на Compose!</string>
+    <string name="second_text_compose">И снова текст!</string>
 </resources>
