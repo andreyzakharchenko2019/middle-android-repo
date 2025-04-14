@@ -1,5 +1,7 @@
 package com.example.androidpracticumcustomview.ui.theme
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
@@ -65,10 +67,21 @@ class CustomContainer @JvmOverloads constructor(
 
             val deltaY = (paddingTop - centerY).toFloat()
 
-            child.animate()
-                .translationY(deltaY)
-                .setDuration(5000)
-                .start()
+            val alfa = ObjectAnimator.ofFloat(child, ALPHA, 0f, 1f).apply {
+                duration = 2000
+            }
+
+            val translation = ObjectAnimator.ofFloat(child, TRANSLATION_Y, 0f, deltaY).apply {
+                duration = 5000
+
+            }
+
+            AnimatorSet().apply {
+                playTogether(alfa, translation)
+                start()
+            }
+
+
         } else {
 
             val child = getChildAt(1)
@@ -83,10 +96,19 @@ class CustomContainer @JvmOverloads constructor(
 
             val deltaY = (paddingBottom + centerY).toFloat()
 
-            child.animate()
-                .translationY(deltaY)
-                .setDuration(5000)
-                .start()
+            val alfa = ObjectAnimator.ofFloat(child, ALPHA, 0f, 1f).apply {
+                duration = 2000
+            }
+
+            val translation = ObjectAnimator.ofFloat(child, TRANSLATION_Y, 0f, deltaY).apply {
+                duration = 5000
+
+            }
+
+            AnimatorSet().apply {
+                playTogether(alfa, translation)
+                start()
+            }
         }
 
     }
@@ -96,14 +118,14 @@ class CustomContainer @JvmOverloads constructor(
             throw IllegalStateException("Элементов может быть только два")
         }
 
-        child.apply {
-            alpha = 0f
-        }
+        /*   child.apply {
+               alpha = 0f
+           }*/
 
         super.addView(child)
 
-        child.animate()
-            .alpha(1f)
-            .setDuration(2000)
+        /*      child.animate()
+                  .alpha(1f)
+                  .setDuration(2000)*/
     }
 }
